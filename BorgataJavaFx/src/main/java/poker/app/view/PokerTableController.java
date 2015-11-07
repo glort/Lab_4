@@ -38,6 +38,9 @@ import pokerBase.Rule;
 public class PokerTableController {
 
 	boolean bP1Sit = false;
+	boolean bP2Sit = false;
+	boolean bP3Sit = false;
+	boolean bP4Sit = false;
 
 	// Reference to the main application.
 	private MainApp mainApp;
@@ -55,15 +58,51 @@ public class PokerTableController {
 
 	@FXML
 	public HBox h1P1;
+	
+	@FXML
+	public HBox h2P2;
+	
+	@FXML
+	public HBox h3P3;
+	
+	@FXML
+	public HBox h4P4;
 
 	@FXML
 	public TextField txtP1Name;
+	
+	@FXML
+	public TextField txtP2Name;
+	
+	@FXML
+	public TextField txtP3Name;
+	
+	@FXML
+	public TextField txtP4Name;
 
 	@FXML
 	public Label lblP1Name;
+	
+	@FXML
+	public Label lblP2Name;
+	
+	@FXML
+	public Label lblP3Name;
+	
+	@FXML
+	public Label lblP4Name;
 
 	@FXML
 	public ToggleButton btnP1SitLeave;
+	
+	@FXML
+	public ToggleButton btnP2SitLeave;
+	
+	@FXML
+	public ToggleButton btnP3SitLeave;
+	
+	@FXML
+	public ToggleButton btnP4SitLeave;
 
 	@FXML
 	public Button btnDraw;
@@ -114,6 +153,75 @@ public class PokerTableController {
 		}
 
 	}
+	
+	@FXML
+	private void handleP2SitLeave() {
+
+		int iPlayerPosition = 2;
+
+		if (bP2Sit == false) {
+			Player p = new Player(txtP2Name.getText(), iPlayerPosition);
+			mainApp.AddPlayerToTable(p);
+			lblP2Name.setText(txtP2Name.getText());
+			lblP2Name.setVisible(true);
+			btnP2SitLeave.setText("Leave");
+			txtP2Name.setVisible(false);
+			bP2Sit = true;
+		} else {
+			mainApp.RemovePlayerFromTable(iPlayerPosition);
+			btnP2SitLeave.setText("Sit");
+			txtP2Name.setVisible(true);
+			lblP2Name.setVisible(false);
+			bP2Sit = false;
+		}
+
+	}
+	
+	@FXML
+	private void handleP3SitLeave() {
+
+		int iPlayerPosition = 3;
+
+		if (bP3Sit == false) {
+			Player p = new Player(txtP3Name.getText(), iPlayerPosition);
+			mainApp.AddPlayerToTable(p);
+			lblP3Name.setText(txtP3Name.getText());
+			lblP3Name.setVisible(true);
+			btnP3SitLeave.setText("Leave");
+			txtP3Name.setVisible(false);
+			bP3Sit = true;
+		} else {
+			mainApp.RemovePlayerFromTable(iPlayerPosition);
+			btnP3SitLeave.setText("Sit");
+			txtP3Name.setVisible(true);
+			lblP3Name.setVisible(false);
+			bP3Sit = false;
+		}
+
+	}
+	
+	@FXML
+	private void handleP4SitLeave() {
+
+		int iPlayerPosition = 4;
+
+		if (bP4Sit == false) {
+			Player p = new Player(txtP4Name.getText(), iPlayerPosition);
+			mainApp.AddPlayerToTable(p);
+			lblP4Name.setText(txtP4Name.getText());
+			lblP4Name.setVisible(true);
+			btnP4SitLeave.setText("Leave");
+			txtP4Name.setVisible(false);
+			bP4Sit = true;
+		} else {
+			mainApp.RemovePlayerFromTable(iPlayerPosition);
+			btnP4SitLeave.setText("Sit");
+			txtP4Name.setVisible(true);
+			lblP4Name.setVisible(false);
+			bP4Sit = false;
+		}
+
+	}
 
 	@FXML
 	private void handleDraw() {
@@ -148,7 +256,106 @@ public class PokerTableController {
 						new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
 
 				transitionForward.play();
-				// h1P1.getChildren().add(img);
+				//h1P1.getChildren().add(img);
+
+				if (iCardDrawn == 5) {
+					GPPH.getHand().EvalHand();
+					System.out.println(GPPH.getHand().getHandStrength());
+				}
+			}
+			
+			if (p.getiPlayerPosition() == 2) {
+				GamePlayPlayerHand GPPH = gme.FindPlayerGame(gme, p);
+				GPPH.addCardToHand(c);
+				String strCard = "/res/img/" + c.getCardImg();
+				ImageView img = new ImageView(new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				ImageView i = (ImageView) h2P2.getChildren().get(iCardDrawn - 1);
+	
+				double CardDealtX = (double) (i.getLayoutX() + i.getLayoutBounds().getMinX());
+				double CardDealtY = (double) (i.getLayoutY() + i.getLayoutBounds().getMinY());
+				
+				ImageView iCardFaceDown = (ImageView) HboxCommonArea.getChildren().get(0);				
+				
+				double CardDeckX = (double) (iCardFaceDown.getLayoutX() + iCardFaceDown.getLayoutBounds().getMinX());
+				double CardDeckY = (double) (iCardFaceDown.getLayoutY() + iCardFaceDown.getLayoutBounds().getMinY());
+				
+				Point2D pntCardDealt = new Point2D(CardDealtX, CardDealtY);
+				Point2D pntCardDeck = new Point2D(CardDeckX, CardDeckY);
+				
+				
+
+				final ParallelTransition transitionForward = createTransition(pntCardDeck, pntCardDealt, i, iCardFaceDown,
+						new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				transitionForward.play();
+				//h1P1.getChildren().add(img);
+
+				if (iCardDrawn == 5) {
+					GPPH.getHand().EvalHand();
+					System.out.println(GPPH.getHand().getHandStrength());
+				}
+			}
+			
+			if (p.getiPlayerPosition() == 3) {
+				GamePlayPlayerHand GPPH = gme.FindPlayerGame(gme, p);
+				GPPH.addCardToHand(c);
+				String strCard = "/res/img/" + c.getCardImg();
+				ImageView img = new ImageView(new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				ImageView i = (ImageView) h3P3.getChildren().get(iCardDrawn - 1);
+	
+				double CardDealtX = (double) (i.getLayoutX() + i.getLayoutBounds().getMinX());
+				double CardDealtY = (double) (i.getLayoutY() + i.getLayoutBounds().getMinY());
+				
+				ImageView iCardFaceDown = (ImageView) HboxCommonArea.getChildren().get(0);				
+				
+				double CardDeckX = (double) (iCardFaceDown.getLayoutX() + iCardFaceDown.getLayoutBounds().getMinX());
+				double CardDeckY = (double) (iCardFaceDown.getLayoutY() + iCardFaceDown.getLayoutBounds().getMinY());
+				
+				Point2D pntCardDealt = new Point2D(CardDealtX, CardDealtY);
+				Point2D pntCardDeck = new Point2D(CardDeckX, CardDeckY);
+				
+				
+
+				final ParallelTransition transitionForward = createTransition(pntCardDeck, pntCardDealt, i, iCardFaceDown,
+						new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				transitionForward.play();
+				//h1P1.getChildren().add(img);
+
+				if (iCardDrawn == 5) {
+					GPPH.getHand().EvalHand();
+					System.out.println(GPPH.getHand().getHandStrength());
+				}
+			}
+			
+			if (p.getiPlayerPosition() == 4) {
+				GamePlayPlayerHand GPPH = gme.FindPlayerGame(gme, p);
+				GPPH.addCardToHand(c);
+				String strCard = "/res/img/" + c.getCardImg();
+				ImageView img = new ImageView(new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				ImageView i = (ImageView) h4P4.getChildren().get(iCardDrawn - 1);
+	
+				double CardDealtX = (double) (i.getLayoutX() + i.getLayoutBounds().getMinX());
+				double CardDealtY = (double) (i.getLayoutY() + i.getLayoutBounds().getMinY());
+				
+				ImageView iCardFaceDown = (ImageView) HboxCommonArea.getChildren().get(0);				
+				
+				double CardDeckX = (double) (iCardFaceDown.getLayoutX() + iCardFaceDown.getLayoutBounds().getMinX());
+				double CardDeckY = (double) (iCardFaceDown.getLayoutY() + iCardFaceDown.getLayoutBounds().getMinY());
+				
+				Point2D pntCardDealt = new Point2D(CardDealtX, CardDealtY);
+				Point2D pntCardDeck = new Point2D(CardDeckX, CardDeckY);
+				
+				
+
+				final ParallelTransition transitionForward = createTransition(pntCardDeck, pntCardDealt, i, iCardFaceDown,
+						new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
+
+				transitionForward.play();
+				//h1P1.getChildren().add(img);
 
 				if (iCardDrawn == 5) {
 					GPPH.getHand().EvalHand();
@@ -160,6 +367,7 @@ public class PokerTableController {
 		if (iCardDrawn == 5) {
 
 			btnDraw.setVisible(false);
+			btnPlay.setVisible(true);
 		}
 
 	}
@@ -168,6 +376,12 @@ public class PokerTableController {
 	private void handlePlay() {
 		// Clear all players hands
 		h1P1.getChildren().clear();
+		h2P2.getChildren().clear();
+		h3P3.getChildren().clear();
+		h4P4.getChildren().clear();
+		
+		HboxCommonArea.getChildren().clear();
+		
 
 		// Get the Rule, start the Game
 		Rule rle = new Rule(eGame.FiveStud);
@@ -187,14 +401,29 @@ public class PokerTableController {
 		gme.setGameDeck(new Deck());
 
 		btnDraw.setVisible(true);
+		btnPlay.setVisible(false);
 		iCardDrawn = 0;
 
 		String strCard = "/res/img/b1fv.png";
 
 		for (int i = 0; i < gme.getNbrOfCards(); i++) {
 			ImageView img = new ImageView(new Image(getClass().getResourceAsStream(strCard), 75, 75, true, true));
-
-			h1P1.getChildren().add(img);
+			
+			for (Player p: mainApp.GetSeatedPlayers()){
+				
+				if (p.getiPlayerPosition() == 1)
+					h1P1.getChildren().add(img);
+				
+				else if (p.getiPlayerPosition() == 2)
+					h2P2.getChildren().add(img);
+				
+				else if (p.getiPlayerPosition() == 3)
+					h3P3.getChildren().add(img);
+				
+				else 
+					h4P4.getChildren().add(img);
+				
+			}
 		}
 
 		ImageView imgBottomCard = new ImageView(
@@ -228,7 +457,7 @@ public class PokerTableController {
 
 		imgTransCard.setX(pntStartPoint.getX());
 		imgTransCard.setY(pntStartPoint.getY());
-		APMainScreen.getChildren().add(imgTransCard);
+		//APMainScreen.getChildren().add(imgTransCard);
 		
 		
 		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), ivStart);
@@ -250,7 +479,7 @@ public class PokerTableController {
 		parallelTransition.getChildren().addAll(fadeOutTransition, fadeInTransition);
 
 		
-		APMainScreen.getChildren().clear();
+		//APMainScreen.getChildren().clear();
 		
 		return parallelTransition;
 	}
